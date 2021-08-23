@@ -36,6 +36,10 @@ class App {
     app.use(cors())
     app.use(bodyParser.json())
     app.use(bodyParser.raw({ type: '*/*' }))
+    app.use(function (err, req, res, next) {
+      console.log('requested')
+      next()
+    })
     app.use(routes)
 
     //

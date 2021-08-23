@@ -10,5 +10,8 @@ module.exports = {
     useSSL: process.env.MINIO_USESSL == 'true',
     username: process.env.MINIO_USERNAME,
     password: process.env.MINIO_PASSWORD
-  }
+  },
+  refreshTokenSecret: process.env.REFRESHTOKENSECRET,
+  accessTokenSecret: process.env.ACCESSTOKENSECRET,
+  tokenExpiryTime: process.env.TOKENEXPIRYTIME || 86400
 }

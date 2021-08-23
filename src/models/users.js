@@ -2,6 +2,8 @@ const mongoose = require('mongoose')
 var crypto = require('crypto')
 var jwt = require('jsonwebtoken')
 var secret = require('../config').secret
+const Services = require('./services')
+const RefreshTokens = require('./refreshtokens')
 
 // Database information required
 var userSchema = mongoose.Schema({
@@ -33,22 +35,21 @@ userSchema.methods.setPassword = function (password){
   this.password = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
 };
 
-userSchema.methods.generateJWT = function () {
-  var today = new Date();
-  var exp = new Date(today);
-  exp.setDate(today.getDate() + 1);
+// userSchema.methods.generateJWT = function () {
+//   var today = new Date();
+//   var exp = new Date(today);
+//   exp.setDate(today.getDate() + 1);
 
-  return jwt.sign({
-    id: this._id,
-    exp: parseInt(exp.getTime() / 10000),
-  }, secret);
-};
+//   return jwt.sign({
+//     id: this._id,
+//     exp: parseInt(exp.getTime() / 10000),
+//   }, secret);
+// };
 
-userSchema.methods.toAuthJSON = function () {
+userSchema.methods.toAuthJSON = async function () {
     return {
         id: this.id,
-        name: this.name,
-        token: this.generateJWT()
+        username: this.username,
     }
 };
 

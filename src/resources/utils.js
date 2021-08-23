@@ -1,4 +1,4 @@
-const hasFields = (obj, ...fields) => {
+export const hasFields = (obj, ...fields) => {
   const errors = []
   fields.forEach(field => {
     if (!obj.hasOwnProperty(field)) errors.push(field)
@@ -6,4 +6,4 @@ const hasFields = (obj, ...fields) => {
   return [errors.length == 0, errors]
 }
 
-export default hasFields
+export default { hasFields }

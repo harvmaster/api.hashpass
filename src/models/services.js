@@ -3,9 +3,6 @@ const aws = require('aws-sdk')
 const minio = require('minio');
 const config = require('../config').minio
 
-console.log(config)
-
-
 var s3 = new minio.Client({
     endPoint: config.endpoint,
     port: config.endpoint_port,
@@ -20,7 +17,7 @@ var serviceSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  userID: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'users',
     required: true
@@ -69,6 +66,13 @@ serviceSchema.methods.getLogo = async function () {
     return presignedUrl
   })
 
+  return logo
+}
+
+// Call clearbit's api for autocomplete and use the logo from there
+serviceSchema.methods.findAndSetLogo = async function () {
+  const res = await axios.get('https://autocomplete.clearbit.com/v1/companies/suggest?query=' + this.name)
+  this.logo = res.data[0].logo || ''
   return logo
 }
 
